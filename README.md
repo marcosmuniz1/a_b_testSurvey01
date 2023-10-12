@@ -1,3 +1,5 @@
-# a_b_testSurvey01
-### A/B testing for alternative survey designs
+# A/B testing in survey desing
+
+### Testing the impact of design on response rates and survey performance
+
 description pending
