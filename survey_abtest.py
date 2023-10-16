@@ -38,7 +38,7 @@ plt.xlabel('Duration (minutes)')
 plt.ylabel('Frequency')
 plt.legend()
 plt.title('Frequency Distribution of Survey Duration')
-plt.savefig('histogram.png')
+#plt.savefig('histogram.png')
 
 print(df.groupby('variant')['completion_minutes'].mean())
 print("\n**********\n")
@@ -101,7 +101,7 @@ for p in ax.patches:
     ax.annotate(f'{height:.2%}', (x + width/2, y + height/2), ha='center')
 
 plt.tight_layout()
-plt.savefig('a_counts_compared.png')
+#plt.savefig('a_counts_compared.png')
 
 print("makes more sense to use a single metric to test, so im going to merge answers assoicated with significant interest and test wether they vary by variant ")
 print("checking for proportion differences in response rates for Somewhat interested or more:")
@@ -139,3 +139,35 @@ if pval < alpha:
     print("There is a significant difference between variants A and B for question a.")
 else:
     print("There is no significant difference between variants A and B for question a.")
+
+print("\n**********\n")
+    
+# Step 3: Bad respondent rate between variants ##################
+
+print("different questionnaire approaches may be harder to understand causing responses which are inconsistent and therefore unusable")
+print("therefore it is also important to assess wether the proportion of usable responses isnt affected by the change\n")
+
+print(f"bad respondent rate in variant a: {variant_A.BR.mean()}")
+print(f"bad respondent rate in variant b: {variant_B.BR.mean()}")
+
+# testing this proportion is the same as for response rates
+
+count_A = len(variant_A[variant_A['BR'] == 1])
+count_B = len(variant_B[variant_B['BR'] == 1])
+
+n_A = len(variant_A)
+n_B = len(variant_B)
+
+# Perform the two-proportion z-test
+stat, pval = proportions_ztest([count_A, count_B], [n_A, n_B])
+
+# Output the test results
+print(f"Z-statistic: {stat}")
+print(f"P-value: {pval}")
+
+# Determine significance
+alpha = 0.05  # Set your desired significance level
+if pval < alpha:
+    print("There is a significant difference between variants A and B in terms of BR rates.")
+else:
+    print("There is no significant difference between variants A and B in terms of BR rates.")
